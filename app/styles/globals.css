@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  height: 5rem;
+  width: 100%;
+  border-bottom: 2px solid black;
+}
+.header-container {
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  margin-inline: 2rem;
+  align-items: center;
+}
+.header-container-right #LoginBtn {
+  width: 5rem;
+  height: 2rem;
+  background-color: rgb(189, 189, 189);
+  border: 1px solid black;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+.header-container-right #LoginBtn:hover {
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  background-color: rgb(145, 145, 145);
+}
+
+/*# sourceMappingURL=globals.css.map */
