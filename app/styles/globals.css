@@ -3,6 +3,22 @@ body {
   padding: 0;
 }
 
+p {
+  margin: 0;
+}
+
+h1 {
+  margin: 0;
+}
+
+h2 {
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+}
+
 .header {
   height: 5rem;
   width: 100%;
@@ -18,15 +34,318 @@ body {
 .header-container-right #LoginBtn {
   width: 5rem;
   height: 2rem;
-  background-color: rgb(189, 189, 189);
-  border: 1px solid black;
-  border-radius: 1rem;
+  background-color: rgb(54, 121, 138);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 0.3rem;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  color: white;
   cursor: pointer;
 }
 .header-container-right #LoginBtn:hover {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-  background-color: rgb(145, 145, 145);
+  background-color: rgba(54, 121, 138, 0.7);
+}
+
+.home {
+  background: linear-gradient(180deg, rgb(54, 121, 138) 0%, rgba(190, 190, 190, 0.463) 50%, rgb(245, 245, 245) 100%), no-repeat;
+  min-height: 100vh;
+  max-height: 100%;
+  color: white;
+}
+.home-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4rem;
+}
+.home-container-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+.home-container-top #Slogan {
+  padding: 0.5rem;
+  background-color: rgb(54, 121, 138);
+  border-radius: 1rem;
+  color: white;
+}
+.home-container-center {
+  width: 50%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: minmax(14rem, 32%) minmax(14rem, 32%) minmax(14rem, 32%);
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  row-gap: 2rem;
+  margin-top: 2rem;
+}
+.home-container-center-card {
+  width: 12rem;
+  height: 14rem;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 0.5rem;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.home-container-center-card:hover {
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+  transition: 300ms;
+}
+.home-container-center-card-bottom {
+  border-top: 1px solid rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.searchbar {
+  height: 3rem;
+  width: 36rem;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 0.4rem;
+  background-color: white;
+}
+.searchbar-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.searchbar-form-bar {
+  width: -webkit-fill-available;
+  margin-right: 0.2rem;
+  border-right: 1px solid rgba(0, 0, 0, 0.6);
+}
+.searchbar-form-bar #SearchBar {
+  background-color: white;
+  font-size: 1.1rem;
+  border: none;
+  color: black;
+  height: 2.5rem;
+  margin: 0.2rem;
+  width: -webkit-fill-available;
+}
+.searchbar-form-bar #SearchBar:focus {
+  border: none;
+}
+.searchbar-form-button {
+  width: 6rem;
+  margin-right: 0.2rem;
+}
+.searchbar-form-button #SearchbarBtn {
+  width: 6rem;
+  height: 2.5rem;
+  background-color: rgb(54, 121, 138);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 0.3rem;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  color: white;
+  cursor: pointer;
+}
+.searchbar-form-button #SearchbarBtn:hover {
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  background-color: rgba(54, 121, 138, 0.7);
+}
+
+.datebar {
+  display: flex;
+  width: 24rem;
+  height: 3rem;
+  background-color: rgb(245, 245, 245);
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  align-items: center;
+  justify-content: left;
+}
+.datebar-left {
+  display: flex;
+  align-items: center;
+}
+.datebar-left-left {
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+}
+.datebar-left-right #DateButton {
+  height: 3rem;
+  width: 8rem;
+  border: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.6);
+  border-left: 1px solid rgba(0, 0, 0, 0.6);
+  background-color: rgb(54, 121, 138);
+  color: rgb(245, 245, 245);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.datebar-left-right #DateButton:hover {
+  background-color: rgba(54, 121, 138, 0.7);
+}
+.datebar-right {
+  display: flex;
+  align-items: center;
+  width: 12rem;
+}
+.datebar-right-left {
+  width: 6rem;
+  display: flex;
+  justify-content: center;
+}
+.datebar-right-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  background-color: rgb(54, 121, 138);
+  width: 6rem;
+  border-top-right-radius: 0.43rem;
+  border-bottom-right-radius: 0.43rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.6);
+  color: rgb(245, 245, 245);
+}
+.datebar-right-right #GuestButton {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  box-shadow: none;
+  border: none;
+  border-radius: 0.2rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.datebar-right-right #GuestButton:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.datebar-right-right #Count {
+  margin: 0.4rem;
+  font-size: 1.3rem;
+}
+
+.filter #FilterButton {
+  width: 8rem;
+  height: 1.7rem;
+  background-color: rgb(179, 179, 179);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+.filter #FilterButton:hover {
+  background-color: rgba(179, 179, 179, 0.6);
+}
+
+.house-card {
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  cursor: pointer;
+}
+.house-card:hover {
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+  transition: 300ms;
+}
+.house-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 2rem;
+}
+.house-card-top #HouseTopTag {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 0.5rem;
+  background-color: rgb(226, 226, 226);
+  margin: 0.3rem;
+  padding: 0.1rem;
+  font-size: 0.9rem;
+}
+.house-card-top #HouseTitle {
+  font-size: 1rem;
+  font-weight: 100;
+}
+.house-card-center {
+  height: fit-content;
+  width: 100%;
+}
+.house-card-bottom {
+  height: fit-content;
+  padding-block: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.house-card-bottom-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: 0.2rem;
+}
+.house-card-bottom-right {
+  display: flex;
+  justify-content: right;
+  gap: 0.5rem;
+  margin-right: 0.2rem;
+}
+.house-card-bottom-right-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.house-card-bottom-right-adaptations {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.6);
+  height: fit-content;
+  width: fit-content;
+}
+
+.listing {
+  background: linear-gradient(180deg, rgb(54, 121, 138) 0%, rgba(190, 190, 190, 0.463) 50%, rgb(245, 245, 245) 100%), no-repeat;
+  min-height: 100vh;
+  max-height: 100%;
+}
+.listing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+}
+.listing-container-top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.listing-container-top-misc {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.listing-container-center {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 /*# sourceMappingURL=globals.css.map */
