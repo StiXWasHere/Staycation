@@ -1,6 +1,9 @@
 import React from "react";
+import AdaptIcons from "./AdaptIcons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBus, faBed, faLocationDot, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
 
-const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, location, publicTransport, imageUrl, beds, rating }) => (
+const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, location, publicTransport, imageUrl, beds, rating, adaptations }) => (
   <div className="house-card">
     <div className="house-card-top">
       <p id="HouseTopTag">{nightlyFee} SEK/Natt</p>
@@ -8,20 +11,32 @@ const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, locatio
       <p id="HouseTopTag">{rating}★</p>
     </div>
     <div className="house-card-center">
-      {imageUrl && <img src={imageUrl} alt={title} />}
+      <img id='HouseImg' src={imageUrl} alt={title}/>
     </div>
     <div className="house-card-bottom">
       <div className="house-card-bottom-left">
-        <p>{bonus}</p>
-        <p>Location: {location}</p>        
+        <div id="FaIconWText">
+          <FontAwesomeIcon icon={faLayerGroup} />
+          <p>{bonus}</p>
+        </div>
+        <div id="FaIconWText">
+          <FontAwesomeIcon icon={faLocationDot} />
+          <p>{location}</p>
+        </div>    
       </div>
       <div className="house-card-bottom-right">
         <div className="house-card-bottom-right-info">
-          <p>{publicTransport}</p>
-          <p>{beds}</p>
+          <div id="FaIconWText">
+            <FontAwesomeIcon icon={faBus} />
+            <p>{publicTransport}</p>
+          </div>
+          <div id="FaIconWText">
+            <FontAwesomeIcon icon={faBed}/>
+            <p>{beds}</p>
+          </div>
         </div>
         <div className="house-card-bottom-right-adaptations">
-          {/* Adaptations or other optional elements can go here if needed */}
+          <AdaptIcons adapt={adaptations}/>
         </div>
       </div>
     </div>

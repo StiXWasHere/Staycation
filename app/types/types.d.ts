@@ -12,14 +12,14 @@ interface Listing  {
     cleaningFee: number
     beds?: number //ändra
     rating?: number //ändra
-    adaptations?: Adapt
+    adaptations: Adapt
     location: string
-    publicTransport: string
-    comments?: listingComment[]
+    publicTransport: number
+    comments?: ListingComment[]
     bonus?: string
 }
 
-type listingComment = {
+type ListingComment = {
     commenter: string //ändra
     creationDate: Date
     content: string
@@ -33,4 +33,4 @@ type Adapt = {
 }
 
 // Define a new type for the fields needed by HouseCard
-type HouseCardProps = Pick<Listing, 'title' | 'bonus' | 'nightlyFee' | 'location' | 'publicTransport' | 'imageUrl' | 'beds' | 'rating'>;
+type HouseCardProps = Pick<Listing, 'title' | 'bonus' | 'nightlyFee' | 'location' | 'publicTransport' | 'imageUrl' | 'beds' | 'rating' | 'adaptations'>;

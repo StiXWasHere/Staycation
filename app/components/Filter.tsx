@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { ReactNode }from 'react'
 
-function Filter() {
+type ModalProps = {
+  isOpen: boolean
+  onClose: () => void
+  children: ReactNode
+}
+
+const Filter: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+
+  if (!isOpen) return null
+
   return (
-    <div className='filter'>
-      <button id='FilterButton'>Filtrera</button>
+    <div className='filter' onClick={onClose}>
+      <div className="filter-container" onClick={(e) => e.stopPropagation()}>
+        <div className="filter-container-top">
+          <button id='FilterClose' onClick={onClose}>✖</button>    
+        </div>
+        {children}
+      </div>
     </div>
   )
 }
