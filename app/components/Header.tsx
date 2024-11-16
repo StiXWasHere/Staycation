@@ -11,13 +11,18 @@ function Header() {
     <div className='header'>
         <div className="header-container">
             <div className="header-container-left">
+              <Link href={'/'}>
                 <h1 id="HeaderLogo">Staycation</h1>
+              </Link>
             </div>
             <div className="header-container-right">
                 {isSignedIn ? (
                   <div className='header-container-right-user'>
                     <span>Hej {user.username}</span>
                     <UserButton/>
+                    <Link href={'/user'}>
+                      <button id="UserBtn">Profil</button>
+                    </Link>
                   </div>
                 ) : (
                   <div className='header-container-right-user'>

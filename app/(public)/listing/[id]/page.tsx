@@ -5,14 +5,38 @@ import { getListingById } from '@/app/api/getOneListing';
 import Header from '@/app/components/Header';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
+import { DateRangePicker } from 'react-date-range';
+import { addDays, differenceInDays, parse, parseISO } from 'date-fns';
+import 'react-date-range/dist/styles.css'; // Base styles
+import 'react-date-range/dist/theme/default.css'; // Theme styles
 
 function page() {
+    //booking
     const [guestCount, setGuestCount] = useState(1)
     const router = useRouter();
     const { isSignedIn, user, isLoaded } = useUser()
+    const [ nightCount, setNightCount] = useState<String>('')
 
-    const increment = () => setGuestCount(prevCount => prevCount + 1)
-    const decrement = () => setGuestCount(prevCount => Math.max(prevCount - 1, 1))
+    const increment = async () => {
+        await new Promise((resolve) => {
+            setGuestCount((prevCount) => {
+                const newCount = prevCount + 1;
+                resolve(newCount)
+                sessionStorage.setItem('guestCount', newCount.toString())
+                return newCount;
+            })
+        })
+    }
+    const decrement = async () => {
+        await new Promise((resolve) => {
+            setGuestCount((prevCount) => {
+                const newCount = Math.max(prevCount - 1, 1)
+                resolve(newCount)
+                sessionStorage.setItem('guestCount', newCount.toString())
+                return newCount;
+            })
+        }) 
+    }
     const [listing, setListing] = useState<Listing>();
 
     useEffect(() => {
@@ -20,7 +44,11 @@ function page() {
             const data = await getListingById(listingId);
             setListing(data); // Update state with the latest data
         }
-  
+        const storedNightCount = sessionStorage.getItem('nightCount');
+        if (storedNightCount) {
+            setNightCount(storedNightCount)
+            console.log('Loaded night count from sessionStorage:', storedNightCount);
+        }
         fetchData(); // Call the async function to fetch data on mount
     }, []);
 
@@ -46,6 +74,63 @@ function page() {
             } else return
             }
         }
+    //booking
+    //date
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    useEffect(() => {
+        const storedNightCount = sessionStorage.getItem('nightCount')
+        const storedGuestCount = sessionStorage.getItem('guestCount')
+        if (storedNightCount) {
+            console.log('Loaded night count from sessionStorage:', storedNightCount);
+        }
+        if (storedGuestCount) {
+            setGuestCount(Number(storedGuestCount))
+            console.log('guest count updated with',storedGuestCount)
+        }
+    }, []);
+
+    const [selectionRange, setSelectionRange] = useState(() => {
+        const storedStartDate = sessionStorage.getItem('startDate');
+        const storedEndDate = sessionStorage.getItem('endDate');
+
+        // Check if the stored dates exist, otherwise use default dates
+        const defaultStartDate = new Date();
+        const defaultEndDate = addDays(defaultStartDate, 7);
+
+        console.log(storedStartDate, storedEndDate, 'dates')
+
+        return {
+            startDate: storedStartDate ? parseISO(storedStartDate) : defaultStartDate,
+            endDate: storedEndDate ? parseISO(storedEndDate) : defaultEndDate,
+            key: 'selection',
+        };
+    });
+
+    const startDate = selectionRange.startDate.toLocaleDateString();
+    const endDate = selectionRange.endDate.toLocaleDateString();
+
+    const handleSelect = (ranges: any) => {
+        const updatedRange = ranges.selection;
+        setSelectionRange(updatedRange);
+        
+        // Only update sessionStorage when both start and end dates are set
+        if (updatedRange.startDate && updatedRange.endDate) {
+            const nightsCount = differenceInDays(updatedRange.endDate, updatedRange.startDate);
+            if (nightsCount) {
+                sessionStorage.setItem('nightCount', nightsCount.toString());
+                sessionStorage.setItem('endDate', updatedRange.endDate.toLocaleDateString());
+                sessionStorage.setItem('startDate', updatedRange.startDate.toLocaleDateString());
+                console.log(nightsCount, 'saved to storage.', startDate, 'to', endDate);
+                setNightCount(nightsCount.toString())
+            }
+        }
+    };
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible((prev) => !prev);
+    };
+    //date
 
 
 
@@ -133,7 +218,26 @@ function page() {
                     <div className="detail-sidebar-container-top">
                         <h3>Redigera bokning</h3>
                         <span>Ändra datum</span>
-                        <button id='DetailDateBtn'>11/10-16/10</button>
+                        <div className="detail-sidebar-container-top-buttons">
+                            <button id='DetailDateBtn' onClick={toggleDropdown}>
+                                {selectionRange.startDate.toLocaleDateString()}
+                            </button>
+                            <span>till</span>
+                            <button id='DetailDateBtn' onClick={toggleDropdown}>
+                                {selectionRange.endDate.toLocaleDateString()}
+                            </button>
+                                {isDropdownVisible && (
+                                <div className="detail-sidebar-container-top-buttons-dropdown">
+                                <DateRangePicker
+                                    ranges={[selectionRange]}
+                                    onChange={handleSelect}
+                                    minDate={new Date()}
+                                    rangeColors={['#3d91ff']}
+                                    showMonthAndYearPickers={false}   
+                                />
+                                </div>                            
+                                )}                                                        
+                        </div>
                         <span>Ändra antal gäster</span>
                         <div className="detail-sidebar-container-top-count">
                             <button id='DetailGuestButton' onClick={decrement}>-</button>
@@ -146,7 +250,7 @@ function page() {
                         <div className="detail-sidebar-container-center-info">
                             <span>{listing.title}</span>
                             <span>{listing.nightlyFee}kr/Natt</span>
-                            <span>Antal nätter: 5</span>
+                            <span>Antal nätter: {nightCount}</span>
                         </div>
                         <div className="detail-sidebar-container-center-pricing">
                             <h4>Pris</h4>

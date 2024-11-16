@@ -5,8 +5,8 @@ $base-black-hover: rgb(60,60,60);
 $base-black-shadow: rgb(75,75,75);
 $button-color: rgb(180, 102, 0,);
 $button-color-hover: rgb(211, 136, 38);
-$button-alt: rgb(179, 179, 179);
-$button-alt-hover: rgb(179, 179, 179, 0.6);
+$button-alt: rgb(202, 202, 202);
+$button-alt-hover: rgb(228, 228, 228);
 $border-color: rgb(0,0,0,0.6);
 $base-white: rgb(245, 245, 245);
 $base-grey: rgb(226, 226, 226);
@@ -33,6 +33,7 @@ h4 {
 }
 a {
     text-decoration: none;
+    color: black;
 }
 ul {
     list-style-type: none;
@@ -251,7 +252,7 @@ ul {
 
 .datebar {
     display: flex;
-    width: 24rem;
+    width: fit-content;
     height: 3rem;
     background-color: $base-white;
     border: 1px solid black;
@@ -273,22 +274,34 @@ ul {
             }            
         }
         &-right {
+            position: relative;
+            display: flex;
 
             #DateButton {
                 height: 3rem;
                 width: 8rem;
                 border: none;
-                border-right: 1px solid $base-black;
                 border-left: 1px solid $base-black;
                 background-color: $base-color;
                 color: $base-white;
-                font-size: 1.1rem;
+                font-size: 1rem;
+                text-align: center;
 
                 cursor: pointer;
 
                 &:hover {
                     background-color: $base-color-hover;
                 }
+            }
+            &-dropdown {
+                position: absolute;
+                top: 100%; // Aligns the dropdown right below the parent
+                left: 50%; // Starts positioning from the center
+                transform: translateX(-50%); // Centers the dropdown horizontally
+                z-index: 1000; // Ensures dropdown stays on top
+                border: 1px solid $base-black;
+                background-color: $base-white;
+                transition: 500ms linear;
             }
 
         }
@@ -299,6 +312,7 @@ ul {
         display: flex;
         align-items: center;
         width: 12rem;
+        border-left: 1px solid $base-black;
 
         &-left {
             width: 6rem;
@@ -306,7 +320,7 @@ ul {
             justify-content: center;
             
             #GuestText {
-
+                
             }
         }
 
@@ -516,6 +530,7 @@ ul {
             flex-direction: column;
             gap: 1rem;
             margin-left: .2rem;
+            height: 100%;
         }
 
         &-right {
@@ -528,7 +543,6 @@ ul {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
-                justify-content: center;
             }
             &-adaptations {
                 background-color: $base-black;
@@ -835,14 +849,37 @@ ul {
                 gap: .3rem;
                 align-items: center;
 
+                &-buttons {
+                    display: flex;
+                    align-items: center;
+                    gap: .5rem;
+                    position: relative;
+                    &-dropdown {
+                        position: absolute;
+                        top: 100%; // Aligns the dropdown right below the parent
+                        left: 0%; // Starts positioning from the center
+                        transform: translateX(-50%); // Centers the dropdown horizontally
+                        z-index: 1000; // Ensures dropdown stays on top
+                        border: 1px solid $base-black;
+                        background-color: $base-white;
+                        transition: 500ms linear;
+                    }
+
+                }
+
                 #DetailDateBtn {
                     width: 80%;
                     height: 2rem;
                     border: 1px solid $base-black;
                     box-shadow: 1px 1px 2px $base-black;
                     border-radius: .3rem;
+                    background-color: $button-alt;
 
                     cursor: pointer;
+
+                    &:hover {
+                        background-color: $button-alt-hover;
+                    }
                 }
 
                 &-count {
@@ -1051,5 +1088,72 @@ ul {
                 }
             }
         }
+    }
+}
+.user {
+    background: linear-gradient(180deg, rgb(54, 121, 138) 0%, rgba(190, 190, 190, 0.463) 50%, rgb(245, 245, 245) 100%), no-repeat;
+    min-height: 100vh;
+    max-height: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    &-container {
+        min-width: 40%;
+        height: fit-content;
+        border-radius: .5rem;
+        box-shadow: 1px 1px 4px $base-black;
+        background-color: $base-white;
+        margin-block: 4rem;
+        padding: 1rem;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 3rem;
+
+        &-top {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        &-center {
+            width: 100%;
+
+            &-bookings {
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                width: 100%;            
+                border: 1px solid $base-black;
+                border-radius: .5rem;
+
+                &-listing {
+                    height: 2rem;
+                    display: flex;
+                    justify-content: space-between;
+                    padding: .3rem;
+                    margin: .3rem;
+                    border: 1px solid $base-black;
+                    background-color: $base-color;
+                    align-items: center;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+#DeleteBtn {
+    margin-inline: .5rem;
+    border-radius: .3rem;
+    color: $base-white;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $base-grey;
     }
 }

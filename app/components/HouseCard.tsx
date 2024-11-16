@@ -28,7 +28,7 @@ const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, locatio
         <div className="house-card-bottom-right-info">
           <div id="FaIconWText">
             <FontAwesomeIcon icon={faBus} />
-            <p>{publicTransport}</p>
+            <p>{publicTransport}m</p>
           </div>
           <div id="FaIconWText">
             <FontAwesomeIcon icon={faBed}/>

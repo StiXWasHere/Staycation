@@ -13,6 +13,7 @@ import { useSearchParams } from 'next/navigation';
 function page() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [filteredListings, setFilteredListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState(true)
 
   // Filter states
   const [sortOrder, setSortOrder] = useState<string | null>(null); // e.g., "LowPrice", "HighPrice", "PostDate"
@@ -37,6 +38,7 @@ function page() {
       const allListings = await getListings();
       setListings(allListings);
       applyFilters(allListings);
+      setLoading(false)
     }
     fetchData();
   }, [query]);
@@ -102,7 +104,11 @@ function page() {
             <Searchbar/>
             <DateAndGuests/>
             <div className="listing-container-top-misc">
-              <h4>Antal träffar: {listings.length} </h4>
+              {loading ? (
+                <h4>Hämtar träffar...</h4>
+              ): (
+                <h4>Antal träffar: {filteredListings.length}</h4>
+              )}
               <button id='FilterBtn' onClick={openFilter}>Filtrera</button>
               <Filter isOpen={isFilterOpen} onClose={closeFilter}>
               <form action="" id='FilterForm'>
