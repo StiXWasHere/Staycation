@@ -9,6 +9,9 @@ import { DateRangePicker } from 'react-date-range';
 import { addDays, differenceInDays, parse, parseISO } from 'date-fns';
 import 'react-date-range/dist/styles.css'; // Base styles
 import 'react-date-range/dist/theme/default.css'; // Theme styles
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import ImagesModal from '@/app/components/ImagesModal';
 
 function page() {
     //booking
@@ -16,6 +19,11 @@ function page() {
     const router = useRouter();
     const { isSignedIn, user, isLoaded } = useUser()
     const [ nightCount, setNightCount] = useState<String>('')
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     const increment = async () => {
         await new Promise((resolve) => {
@@ -171,17 +179,37 @@ function page() {
                             <button id='ContactBtn'>Kontakta värd</button>
                         </div>
                     </div>
-                    <div className="detail-container-main-map">
-
-                    </div>
                     <div className="detail-container-main-comments">
-
+                        <h4>Kommentarer</h4>
+                        {listing.comments.map((comment) => (
+                            <div className='detail-container-main-comments-item'>
+                                <div className="detail-container-main-comments-item-left">
+                                    <div className="detail-container-main-comments-item-left-name">
+                                        <span id='Commenter'>{comment.commenter}</span>
+                                    </div>
+                                    <div className="detail-container-main-comments-item-left-text">
+                                        <p>{comment.content}</p>
+                                    </div>
+                                </div>
+                                <div className="detail-container-main-comments-item-right">
+                                    <span>{comment.rating}</span>
+                                    <FontAwesomeIcon icon={faStar}/>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className="detail-container-addon">
                     <div className="detail-container-addon-top">
                         <div className="detail-container-addon-top-images">
-                            <button id='ShowImgBtn'>se alla bilder</button>
+                            <button id='ShowImgBtn' onClick={openModal}>se alla bilder</button>
+                            <ImagesModal isOpen={isModalOpen} onClose={closeModal}>
+                            {listing.additionalImages.map((image) => (
+                                    <div className="images-modal-container-center">
+                                        <img id='DetailImgAdditional' src={image.imageUrl} alt="Image" />
+                                    </div>
+                                ))}
+                            </ImagesModal>
                         </div>
                         <div className="detail-container-addon-top-info">
                             <div className="detail-container-addon-top-info-left">

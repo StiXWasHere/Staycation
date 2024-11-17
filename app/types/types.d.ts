@@ -3,7 +3,8 @@
 
 interface Listing  {
     id: string
-    imageUrl?: string //ändra
+    imageUrl: string
+    additionalImages: ListingImage[]
     title: string
     description: string
     creationDate: Date
@@ -15,7 +16,7 @@ interface Listing  {
     adaptations: Adapt
     location: string
     publicTransport: number
-    comments?: ListingComment[]
+    comments: ListingComment[]
     bonus?: string
 }
 
@@ -23,8 +24,11 @@ type ListingComment = {
     commenter: string //ändra
     creationDate: Date
     content: string
+    rating: number
 }
-
+type ListingImage = {
+    imageUrl: string
+}
 type Adapt = {
     wheelchair: boolean
     deaf: boolean
