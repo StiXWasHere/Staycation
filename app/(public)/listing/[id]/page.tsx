@@ -155,7 +155,15 @@ function page() {
             <div className="detail-container">
                 <div className="detail-container-main">
                     <div className="detail-container-main-img">
-                        <img id='DetailImage' src={listing?.imageUrl} alt="image" />
+                        <img id='DetailImage' src={listing?.imageUrl} alt="image" />                            
+                        <button id='ShowImgBtn' onClick={openModal}>se alla bilder</button>
+                            <ImagesModal isOpen={isModalOpen} onClose={closeModal}>
+                            {listing.additionalImages.map((image) => (
+                                    <div className="images-modal-container-center">
+                                        <img id='DetailImgAdditional' src={image.imageUrl} alt="Image" />
+                                    </div>
+                                ))}
+                            </ImagesModal>
                     </div>
                     <div className="detail-container-main-info">
                         <div className="detail-container-main-info-top">
@@ -201,16 +209,6 @@ function page() {
                 </div>
                 <div className="detail-container-addon">
                     <div className="detail-container-addon-top">
-                        <div className="detail-container-addon-top-images">
-                            <button id='ShowImgBtn' onClick={openModal}>se alla bilder</button>
-                            <ImagesModal isOpen={isModalOpen} onClose={closeModal}>
-                            {listing.additionalImages.map((image) => (
-                                    <div className="images-modal-container-center">
-                                        <img id='DetailImgAdditional' src={image.imageUrl} alt="Image" />
-                                    </div>
-                                ))}
-                            </ImagesModal>
-                        </div>
                         <div className="detail-container-addon-top-info">
                             <div className="detail-container-addon-top-info-left">
                                 <span>Buss: {listing.publicTransport}m</span>

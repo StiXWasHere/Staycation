@@ -1,0 +1,27 @@
+.form-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: .5rem;
+    border: 1px solid $base-black;
+    border-radius: .3rem;
+    width: 11rem;
+
+    &-group {
+        display: flex;
+        flex-direction: column;
+        margin-block: .4rem;
+
+        &-left {
+            display: flex;
+            gap: .3rem;
+        }
+        &-right {
+            display: flex;
+            align-items: center;
+            margin-block: .6rem;
+            gap: .3rem;
+        }
+    }
+}

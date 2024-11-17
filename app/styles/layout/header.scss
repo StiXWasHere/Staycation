@@ -1,0 +1,57 @@
+.header {
+    height: 5rem;
+    width: 100%;
+    border-bottom: 2px solid black;
+
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    
+    &-container {
+        height: fit-content;
+        display: flex;
+        justify-content: space-between;
+        margin-inline: 2rem;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        @media (max-width: 430px) {
+            margin-inline: .5rem;
+        }
+
+        &-left {
+
+        }
+        &-right {
+
+
+            &-user {
+
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            
+                #UserBtn {
+                width: 5rem;
+                height: 2rem;
+                background-color: $base-color;
+                border: 1px solid $base-black;
+                border-radius: .3rem;
+                box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+                color: white;
+
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+                    background-color: $base-color-hover;
+                    }
+                }
+            }
+        }
+    }
+}
+#StaycationLogo {
+    height: 4rem;
+}

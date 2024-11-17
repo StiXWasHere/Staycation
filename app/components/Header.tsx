@@ -12,7 +12,7 @@ function Header() {
         <div className="header-container">
             <div className="header-container-left">
               <Link href={'/'}>
-                <h1 id="HeaderLogo">Staycation</h1>
+                <img id='StaycationLogo' src="/staycationlogo.jpg" alt="Staycation" />
               </Link>
             </div>
             <div className="header-container-right">

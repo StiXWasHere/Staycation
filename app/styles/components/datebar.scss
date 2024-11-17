@@ -1,0 +1,160 @@
+.datebar {
+    display: flex;
+    width: fit-content;
+    height: 3rem;
+    background-color: $base-white;
+    border: 1px solid black;
+    border-radius: .5rem;
+    align-items: center;
+    justify-content: left;
+    box-shadow: 1px 1px 4px $base-black;
+
+    @media (max-width: 600px) {
+        border-radius: 0;
+    }
+
+
+    &-left {
+        display: flex;
+        align-items: center;
+
+        &-left {
+            width: 4rem;
+            display: flex;
+            justify-content: center;
+
+            @media (max-width: 600px) {
+                display: none;
+            }
+
+            #DateText {
+
+            }            
+        }
+        &-right {
+            position: relative;
+            display: flex;
+
+            #DateButton {
+                height: 3rem;
+                width: 8rem;
+                border: none;
+                border-left: 1px solid $base-black;
+                background-color: $base-color;
+                color: $base-white;
+                font-size: 1rem;
+                text-align: center;
+
+                cursor: pointer;
+
+                @media (max-width: 600px) {
+                    border-right: 1px solid $base-black;
+                    border-left: 0;
+                }
+                @media (max-width: 370px) {
+                    width: 6rem;
+                }
+
+                &:hover {
+                    background-color: $base-color-hover;
+                }
+            }
+            &-dropdown {
+                position: absolute;
+                top: 100%; // Aligns the dropdown right below the parent
+                left: 50%; // Starts positioning from the center
+                transform: translateX(-50%); // Centers the dropdown horizontally
+                z-index: 1000; // Ensures dropdown stays on top
+                border: 1px solid $base-black;
+                background-color: $base-white;
+                transition: 500ms linear;
+
+                @media (max-width: 720px) {
+                    scale: 80%;
+                    top: 30%;
+                    left: 40%;
+                }
+                @media (max-width: 500px) {
+                    scale: 60%;
+                    top: -40%;
+                    left: 20%;
+                }
+                @media (max-width: 370px) {
+                    scale: 50%;
+                    top: -60%;
+                    left: 0%;
+                }
+            }
+
+        }
+
+    }
+
+    &-right {
+        display: flex;
+        align-items: center;
+        width: 12rem;
+        border-left: 1px solid $base-black;
+
+        @media (max-width: 600px) {
+            width: fit-content;
+            border: 0;
+        }
+
+        &-left {
+            width: 6rem;
+            display: flex;
+            justify-content: center;
+
+            @media (max-width: 600px) {
+                display: none;
+            }
+            
+            #GuestText {
+                
+            }
+        }
+
+        &-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 3rem;
+            background-color: $base-color;
+            width: 6rem;
+            border-top-right-radius: .43rem;
+            border-bottom-right-radius: .43rem;
+            border-left: 1px solid $base-black;
+            color: $base-white;
+
+            @media (max-width: 600px) {
+                border-radius: 0;
+                border: none;
+            }
+
+            #GuestButton {
+                width: 1.5rem;
+                height: 1.5rem;
+                background-color: $base-black;
+                color: white;
+                box-shadow: none;
+                border: none;
+                border-radius: .2rem;
+                font-size: 1.2rem;
+                
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $base-black-hover;
+                }
+            }
+
+            #Count {
+                margin: .4rem;
+                font-size: 1.3rem;
+            }
+
+        }
+
+    }
+}
