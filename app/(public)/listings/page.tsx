@@ -170,8 +170,8 @@ function page() {
                   publicTransport={listing.publicTransport}
                   imageUrl={listing.imageUrl}
                   beds={listing.beds}
-                  rating={listing.rating}
                   adaptations={listing.adaptations}
+                  comments={listing.comments}
                 />
               </div>
             ))}

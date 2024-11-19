@@ -71,7 +71,7 @@ interface CardDetails {
 
 
 // Define a new type for the fields needed by HouseCard
-type HouseCardProps = Pick<Listing, 'title' | 'bonus' | 'nightlyFee' | 'location' | 'publicTransport' | 'imageUrl' | 'beds' | 'rating' | 'adaptations'>;
+type HouseCardProps = Pick<Listing, 'title' | 'bonus' | 'nightlyFee' | 'location' | 'publicTransport' | 'imageUrl' | 'beds' | 'adaptations' | 'comments'>;
 
 type CardFormProps = {
     setCardDetails: React.Dispatch<React.SetStateAction<CardDetails>>;

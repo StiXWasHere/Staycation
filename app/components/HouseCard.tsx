@@ -3,12 +3,19 @@ import AdaptIcons from "./AdaptIcons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBus, faBed, faLocationDot, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
 
-const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, location, publicTransport, imageUrl, beds, rating, adaptations }) => (
+const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, location, publicTransport, imageUrl, beds, adaptations, comments }) => {
+  const calculateRating = () => {
+    const totalRating = comments.reduce((sum, comment) => sum + comment.rating, 0)
+    const averageRating = comments.length > 0 ? totalRating / comments.length : 0
+    return averageRating;
+}
+
+  return(
   <div className="house-card">
     <div className="house-card-top">
       <p id="HouseTopTag">{nightlyFee} SEK/Natt</p>
       <h3 id="HouseTitle">{title}</h3>
-      <p id="HouseTopTag">{rating}★</p>
+      <p id="HouseTopTag">{calculateRating()}★</p>
     </div>
     <div className="house-card-center">
       <img id='HouseImg' src={imageUrl} alt={title}/>
@@ -42,5 +49,6 @@ const HouseCard: React.FC<HouseCardProps> = ({ title, bonus, nightlyFee, locatio
     </div>
   </div>
 );
+}
 
 export default HouseCard;
