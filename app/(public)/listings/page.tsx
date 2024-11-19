@@ -9,6 +9,7 @@ import HouseCard from '@/app/components/HouseCard';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
+import { getUsersData } from '@/app/api/GetUsersData';
 
 function page() {
   const [listings, setListings] = useState<Listing[]>([]);
@@ -35,9 +36,9 @@ function page() {
   // Fetch listings
   useEffect(() => {
     async function fetchData() {
-      const allListings = await getListings();
-      setListings(allListings);
-      applyFilters(allListings);
+      const allListings = await getListings()
+      setListings(allListings)
+      applyFilters(allListings)
       setLoading(false)
     }
     fetchData();

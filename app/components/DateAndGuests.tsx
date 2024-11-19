@@ -10,14 +10,10 @@ function DateAndGuests() {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
     useEffect(() => {
-        const storedNightCount = sessionStorage.getItem('nightCount');
+        const storedNightCount = sessionStorage.getItem('nightCount')
         const storedGuestCount = sessionStorage.getItem('guestCount')
-        if (storedNightCount) {
-            console.log('Loaded night count from sessionStorage:', storedNightCount);
-        }
         if (storedGuestCount) {
             setGuestCount(Number(storedGuestCount))
-            console.log('guest count updated with',storedGuestCount)
         }
     }, []);
 
@@ -50,7 +46,6 @@ function DateAndGuests() {
         const defaultStartDate = new Date();
         const defaultEndDate = addDays(defaultStartDate, 7);
 
-        console.log(storedStartDate, storedEndDate, 'dates')
 
         return {
             startDate: storedStartDate ? parseISO(storedStartDate) : defaultStartDate,
@@ -73,7 +68,6 @@ function DateAndGuests() {
                 sessionStorage.setItem('nightCount', nightsCount.toString());
                 sessionStorage.setItem('endDate', updatedRange.endDate.toLocaleDateString());
                 sessionStorage.setItem('startDate', updatedRange.startDate.toLocaleDateString());
-                console.log(nightsCount, 'saved to storage.', startDate, 'to', endDate);
             }
         }
     };

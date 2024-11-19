@@ -10,28 +10,44 @@ import { addDays, differenceInDays, parse, parseISO } from 'date-fns';
 import 'react-date-range/dist/styles.css'; // Base styles
 import 'react-date-range/dist/theme/default.css'; // Theme styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faBus, faWheelchair, faDeaf, faEyeSlash, faChild } from "@fortawesome/free-solid-svg-icons";
 import ImagesModal from '@/app/components/ImagesModal';
+import AdaptModal from '@/app/components/AdaptModal';
+import { CheckListingStatus } from '@/app/status/CheckListingStatus';
+import { getUsersData } from '@/app/api/GetUsersData';
+
+type IncludedIcons = {
+    included: Included
+}
 
 function page() {
+    
+    const router = useRouter()
+
     //booking
     const [guestCount, setGuestCount] = useState(1)
-    const router = useRouter();
+    const [ nightCount, setNightCount] = useState<string>('')
+
     const { isSignedIn, user, isLoaded } = useUser()
-    const [ nightCount, setNightCount] = useState<String>('')
+    const [listing, setListing] = useState<Listing>()
+    const [listingData, setListingData] = useState<userData[]>([])
+    const [error, setError] = useState<string>('')
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const [isAdaptOpen, setIsAdaptOpen] = useState(false)
+    const openAdapt = () => setIsAdaptOpen(true)
+    const closeAdapt = () => setIsAdaptOpen(false)
 
     const increment = async () => {
         await new Promise((resolve) => {
             setGuestCount((prevCount) => {
-                const newCount = prevCount + 1;
+                const newCount = prevCount + 1
                 resolve(newCount)
                 sessionStorage.setItem('guestCount', newCount.toString())
-                return newCount;
+                return newCount
             })
         })
     }
@@ -41,30 +57,43 @@ function page() {
                 const newCount = Math.max(prevCount - 1, 1)
                 resolve(newCount)
                 sessionStorage.setItem('guestCount', newCount.toString())
-                return newCount;
+                return newCount
             })
         }) 
     }
-    const [listing, setListing] = useState<Listing>();
-
+    
     useEffect(() => {
         async function fetchData() {
-            const data = await getListingById(listingId);
-            setListing(data); // Update state with the latest data
+            const data = await getListingById(listingId)
+            setListing(data)
         }
-        const storedNightCount = sessionStorage.getItem('nightCount');
+        const storedNightCount = sessionStorage.getItem('nightCount')
         if (storedNightCount) {
             setNightCount(storedNightCount)
-            console.log('Loaded night count from sessionStorage:', storedNightCount);
+            console.log('Loaded night count from sessionStorage:', storedNightCount)
         }
-        fetchData(); // Call the async function to fetch data on mount
+        fetchData()
     }, []);
 
     const url = usePathname()
     const parts = url.split("/")
     const listingId = parts[parts.length - 1]
 
+    const dateAvailability = (start: Date, end: Date, unavailable: Date[]) => {
+        return unavailable.some(
+            (date) => 
+                date >= start && date <= end
+        )
+    }
+    
+
     const handleBookingRequest = () => {
+
+        const { startDate, endDate } = selectionRange
+        if(dateAvailability(startDate, endDate, unavailableDates)) {
+            setError('Datumen du valt är inte tillgängliga. Vänligen välj nya datum.')
+            return
+        }
         if (!isSignedIn) {
             router.push('/sign-in')
         } else {
@@ -75,69 +104,108 @@ function page() {
                     title: listing.title,
                     nightlyFee: listing.nightlyFee,
                     cleaningFee: listing.cleaningFee
-                };
-                sessionStorage.setItem('listingData', JSON.stringify(listingData));
+                }
+                sessionStorage.setItem('listingData', JSON.stringify(listingData))
                 console.log(listingData)
+                setError('')
                 router.push('/checkout')
             } else return
             }
         }
+
+    const bookingCost = () => {
+        const nights = parseInt(nightCount)
+        if(!listing) return
+        else {
+            const cost = listing.nightlyFee
+            const total = nights * cost
+            return total
+        } 
+    }
+    const serviceFee = () => {
+        const total = bookingCost()
+        if (!total) return
+        else {
+            const percentage = 10
+            const serviceFee = (percentage/100) * total
+            return serviceFee
+        }
+    }
+    const totalSum = () => {
+        const booking = bookingCost()
+        if(!booking) return
+        const fee = serviceFee()
+        if(!fee) return
+        if(!listing) return
+        const cleaning = listing.cleaningFee
+
+        const sum = booking + fee + cleaning
+        return sum
+    }
     //booking
     //date
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false)
+    const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
     useEffect(() => {
         const storedNightCount = sessionStorage.getItem('nightCount')
         const storedGuestCount = sessionStorage.getItem('guestCount')
         if (storedNightCount) {
-            console.log('Loaded night count from sessionStorage:', storedNightCount);
+            console.log('Loaded night count from sessionStorage:', storedNightCount)
         }
         if (storedGuestCount) {
             setGuestCount(Number(storedGuestCount))
             console.log('guest count updated with',storedGuestCount)
         }
-    }, []);
+
+        const fetchUnavailableDates = async () => {
+            const {unavailableDates} = await CheckListingStatus(listingId)
+            setUnavailableDates(unavailableDates)
+        }
+        fetchUnavailableDates()
+    }, [])
 
     const [selectionRange, setSelectionRange] = useState(() => {
-        const storedStartDate = sessionStorage.getItem('startDate');
-        const storedEndDate = sessionStorage.getItem('endDate');
+        const storedStartDate = sessionStorage.getItem('startDate')
+        const storedEndDate = sessionStorage.getItem('endDate')
 
-        // Check if the stored dates exist, otherwise use default dates
-        const defaultStartDate = new Date();
-        const defaultEndDate = addDays(defaultStartDate, 7);
 
+        const defaultStartDate = new Date()
+        const defaultEndDate = addDays(defaultStartDate, 7)
         console.log(storedStartDate, storedEndDate, 'dates')
+
+        
 
         return {
             startDate: storedStartDate ? parseISO(storedStartDate) : defaultStartDate,
             endDate: storedEndDate ? parseISO(storedEndDate) : defaultEndDate,
             key: 'selection',
-        };
-    });
+        }
+    })
+    
 
-    const startDate = selectionRange.startDate.toLocaleDateString();
-    const endDate = selectionRange.endDate.toLocaleDateString();
+    const startDate = selectionRange.startDate.toLocaleDateString()
+    const endDate = selectionRange.endDate.toLocaleDateString()
 
     const handleSelect = (ranges: any) => {
-        const updatedRange = ranges.selection;
-        setSelectionRange(updatedRange);
+        const updatedRange = ranges.selection
+        setSelectionRange(updatedRange)
         
-        // Only update sessionStorage when both start and end dates are set
         if (updatedRange.startDate && updatedRange.endDate) {
-            const nightsCount = differenceInDays(updatedRange.endDate, updatedRange.startDate);
+            const nightsCount = differenceInDays(updatedRange.endDate, updatedRange.startDate)
             if (nightsCount) {
-                sessionStorage.setItem('nightCount', nightsCount.toString());
-                sessionStorage.setItem('endDate', updatedRange.endDate.toLocaleDateString());
-                sessionStorage.setItem('startDate', updatedRange.startDate.toLocaleDateString());
-                console.log(nightsCount, 'saved to storage.', startDate, 'to', endDate);
+                sessionStorage.setItem('nightCount', nightsCount.toString())
+                sessionStorage.setItem('endDate', updatedRange.endDate.toLocaleDateString())
+                sessionStorage.setItem('startDate', updatedRange.startDate.toLocaleDateString())
+                console.log(nightsCount, 'saved to storage.', startDate, 'to', endDate)
                 setNightCount(nightsCount.toString())
             }
         }
     };
 
     const toggleDropdown = () => {
-        setIsDropdownVisible((prev) => !prev);
-    };
+        setIsDropdownVisible((prev) => !prev)   
+    }
     //date
 
 
@@ -184,7 +252,9 @@ function page() {
                             </div>
                         </div>
                         <div className="detail-container-main-info-bottom">
-                            <button id='ContactBtn'>Kontakta värd</button>
+                            <a href="mailto: fabbe.nilsson123123@gmail.com">
+                                <button id='ContactBtn'>Kontakta värd</button>
+                            </a>
                         </div>
                     </div>
                     <div className="detail-container-main-comments">
@@ -211,14 +281,38 @@ function page() {
                     <div className="detail-container-addon-top">
                         <div className="detail-container-addon-top-info">
                             <div className="detail-container-addon-top-info-left">
-                                <span>Buss: {listing.publicTransport}m</span>
+                                <span><FontAwesomeIcon icon={faBus}/>{listing.publicTransport}m</span>
                             </div>
                             <div className="detail-container-addon-top-info-right">
                                 <span>{listing.nightlyFee}kr/natt</span>
                             </div>
                         </div>
                         <div className="detail-container-addon-top-adapt">
-                            <button id='AdaptBtn'>Visa tillgänglighet</button>
+                            <button id='AdaptBtn' onClick={openAdapt}>Visa tillgänglighet</button>
+                            <AdaptModal isOpen={isAdaptOpen} onClose={closeAdapt}>
+                                <div className='adapt-modal-container-center'>
+                                    {typeof listing.adaptationDetails?.blind === 'string' && (
+                                        <p>
+                                            <FontAwesomeIcon icon={faEyeSlash} /> {listing.adaptationDetails.blind}
+                                        </p>
+                                    )}
+                                    {typeof listing.adaptationDetails?.deaf === 'string' && (
+                                        <p>
+                                            <FontAwesomeIcon icon={faDeaf} /> {listing.adaptationDetails.deaf}
+                                        </p>
+                                    )}
+                                    {typeof listing.adaptationDetails?.wheelchair === 'string' && (
+                                        <p>
+                                            <FontAwesomeIcon icon={faWheelchair} /> {listing.adaptationDetails.wheelchair}
+                                        </p>
+                                    )}
+                                    {typeof listing.adaptationDetails?.child === 'string' && (
+                                        <p>
+                                            <FontAwesomeIcon icon={faChild} /> {listing.adaptationDetails.child}
+                                        </p>
+                                    )}
+                                </div>
+                            </AdaptModal>
                         </div>
                     </div>
                     <div className="detail-container-addon-center">
@@ -227,13 +321,15 @@ function page() {
                                 <h4>Vad som ingår</h4>
                             </div>
                             <div className="detail-container-addon-center-included-center">
-                                <span>Wifi</span>
-                                <span>TV</span>
-                                <span>Toalettartiklar</span>
+                                {listing.included.wifi && <span>·Wifi</span>}
+                                {listing.included.TV && <span>·TV</span>}
+                                {listing.included.Kitchen && <span>·Kök</span>}
+                                {listing.included.Parking && <span>·Parkering</span>}
+                                {listing.included.Laundry && <span>·Tvättmaskin</span>}
+                                {listing.included.Pets && <span>·Husdjur tillåtna</span>}
                             </div>
                             <div className="detail-container-addon-center-included-bottom">
                                 <span>{listing?.beds} Sovrum</span>
-                                <span>2 Badrum - Dusch och badkar</span>
                             </div>
                         </div>
                     </div>
@@ -259,7 +355,8 @@ function page() {
                                     onChange={handleSelect}
                                     minDate={new Date()}
                                     rangeColors={['#3d91ff']}
-                                    showMonthAndYearPickers={false}   
+                                    showMonthAndYearPickers={false}
+                                    disabledDates={unavailableDates}   
                                 />
                                 </div>                            
                                 )}                                                        
@@ -282,18 +379,19 @@ function page() {
                             <h4>Pris</h4>
                             <div className="detail-sidebar-container-center-pricing-container">
                                 <div className="detail-sidebar-container-center-pricing-container-breakdown">
-                                    <span>Bokning: totala priset</span>
+                                    <span>Bokning: {bookingCost()}kr</span>
                                     <span>Städavgift: {listing.cleaningFee}kr</span>
-                                    <span>Service avgift: % av priset</span>
+                                    <span>Service avgift: {serviceFee()}kr</span>
                                 </div>
                                 <div className="detail-sidebar-container-center-pricing-container-total">
                                     <h4>Totalt:</h4>
-                                    <span>Totala summan</span>
+                                    <span>{totalSum()}kr</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="detail-sidebar-container-bottom">
+                        <h4 id='DetailBookError'>{error}</h4>
                         <button id='DetailBookBtn' onClick={handleBookingRequest}>Boka</button>
                     </div>
                 </div>

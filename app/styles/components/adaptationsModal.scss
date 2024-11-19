@@ -1,4 +1,4 @@
-.images-modal {
+.adapt-modal {
 
     position: fixed;
     top: 0;
@@ -17,7 +17,8 @@
         border: 1px solid $base-black;
         display: flex;
         flex-direction: column;
-        min-width: 20rem;
+        width: 20rem;
+        border-radius: .5rem;
 
         &-top {
 
@@ -25,8 +26,7 @@
             width: 100%;
             justify-content: flex-end;
 
-            #ImagesModalClose {
-                position: absolute;
+            #AdaptModalClose {
                 margin-right: .5rem;
                 margin-top: .5rem;
                 width: 1.5rem;
@@ -46,13 +46,8 @@
         &-center {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            #DetailImgAdditional {
-                max-width: 100%;
-                max-height: 16rem;
-                object-fit: cover;
-                border: 8px ridge $base-white;
-            }
+            gap: 1rem;
+            padding: 1rem;
         }
     }
 }

@@ -1,0 +1,46 @@
+.checkout-return {
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    &-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-center {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            color: $base-white;
+            font-size: 1.1rem;
+
+            #CheckoutReturnBtn {
+                width: 12rem;
+                height: 2.5rem;
+                color: $base-white;
+                background-color: $button-color;
+                border: 1px solid $base-black;
+                border-radius: .3rem;
+                box-shadow: 1px 1px 4px $base-black;
+                font-size: 1.1rem;
+
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $button-color-hover;
+                }
+            }
+        }
+    }
+}

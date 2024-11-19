@@ -1,10 +1,29 @@
 import { useState } from "react";
 
-export const CardForm = () => {
-    const [cardNumber, setCardNumber] = useState("");
-    const [expiryMonth, setExpiryMonth] = useState("");
-    const [expiryYear, setExpiryYear] = useState("");
-    const [ccv, setCcv] = useState("");
+interface CardDetails {
+    cardNumber: string;
+    expiryMonth: string;
+    expiryYear: string;
+    ccv: string;
+}
+
+type CardFormProps = {
+    setCardDetails: React.Dispatch<React.SetStateAction<CardDetails>>;
+};
+
+export const CardForm: React.FC<CardFormProps> = ({ setCardDetails }) => {
+    const [cardDetails, setLocalCardDetails] = useState<CardDetails>({
+        cardNumber: "",
+        expiryMonth: "",
+        expiryYear: "",
+        ccv: "",
+    });
+
+    const handleChange = (field: keyof CardDetails, value: string) => {
+        const updatedCardDetails = { ...cardDetails, [field]: value };
+        setLocalCardDetails(updatedCardDetails);
+        setCardDetails(updatedCardDetails); // Sync with parent state
+    };
 
     return (
         <div className="form-card">
@@ -14,8 +33,8 @@ export const CardForm = () => {
                     <input
                         type="text"
                         id="cardNumber"
-                        value={cardNumber}
-                        onChange={(e) => setCardNumber(e.target.value)}
+                        value={cardDetails.cardNumber}
+                        onChange={(e) => handleChange("cardNumber", e.target.value)}
                         maxLength={16}
                         placeholder="1234 5678 9012 3456"
                         required
@@ -28,13 +47,13 @@ export const CardForm = () => {
                         <select
                             name="expiryMonth"
                             id="expiryMonth"
-                            value={expiryMonth}
-                            onChange={(e) => setExpiryMonth(e.target.value)}
+                            value={cardDetails.expiryMonth}
+                            onChange={(e) => handleChange("expiryMonth", e.target.value)}
                             required
                         >
                             {Array.from({ length: 12 }, (_, i) => (
-                                <option key={i} value={(i + 1).toString().padStart(2, '0')}>
-                                    {(i + 1).toString().padStart(2, '0')}
+                                <option key={i} value={(i + 1).toString().padStart(2, "0")}>
+                                    {(i + 1).toString().padStart(2, "0")}
                                 </option>
                             ))}
                         </select>
@@ -42,8 +61,8 @@ export const CardForm = () => {
                         <select
                             name="expiryYear"
                             id="expiryYear"
-                            value={expiryYear}
-                            onChange={(e) => setExpiryYear(e.target.value)}
+                            value={cardDetails.expiryYear}
+                            onChange={(e) => handleChange("expiryYear", e.target.value)}
                             required
                         >
                             {Array.from({ length: 10 }, (_, i) => (
@@ -58,16 +77,15 @@ export const CardForm = () => {
                         <input
                             type="text"
                             id="ccv"
-                            value={ccv}
-                            onChange={(e) => setCcv(e.target.value)}
+                            value={cardDetails.ccv}
+                            onChange={(e) => handleChange("ccv", e.target.value)}
                             maxLength={3}
-                            style={{ width: '3rem' }}
+                            style={{ width: "3rem" }}
                             placeholder="123"
                             required
                         />
                     </div>
                 </div>
-                
             </form>
         </div>
     );
